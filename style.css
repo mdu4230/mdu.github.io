@@ -1,0 +1,828 @@
+/* ============================================================
+   STYLE.CSS — Md Uddin Portfolio
+   Minimalist & clean design for an IT Support professional.
+   Uses CSS custom properties for consistent theming.
+   ============================================================ */
+
+/* ----- CSS Custom Properties (Design Tokens) ----- */
+:root {
+    /* Color palette */
+    --color-primary: #2563EB;         /* Trust-blue — primary actions & links */
+    --color-primary-hover: #1D4ED8;   /* Darker blue for hover states */
+    --color-dark: #1E293B;            /* Navy — headings & primary text */
+    --color-text: #334155;            /* Slate-dark — body text */
+    --color-muted: #64748B;           /* Slate — secondary / caption text */
+    --color-border: #E2E8F0;          /* Light gray — dividers & borders */
+    --color-bg: #F8FAFC;             /* Off-white — page background */
+    --color-surface: #FFFFFF;         /* White — card backgrounds */
+    --color-success: #10B981;         /* Green — success states */
+
+    /* Typography */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    /* Spacing scale (based on 4px grid) */
+    --space-xs: 0.25rem;   /* 4px */
+    --space-sm: 0.5rem;    /* 8px */
+    --space-md: 1rem;      /* 16px */
+    --space-lg: 1.5rem;    /* 24px */
+    --space-xl: 2rem;      /* 32px */
+    --space-2xl: 3rem;     /* 48px */
+    --space-3xl: 4rem;     /* 64px */
+    --space-4xl: 6rem;     /* 96px */
+
+    /* Border radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+    /* Transitions */
+    --transition: 0.25s ease;
+}
+
+
+/* ----- Reset & Base Styles ----- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;  /* Offset for fixed navbar */
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Utility container — centers content with max-width */
+.container {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+
+/* Shared section spacing */
+.section {
+    padding: var(--space-4xl) 0;
+}
+
+/* Consistent section heading style */
+.section-heading {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-dark);
+    margin-bottom: var(--space-2xl);
+    text-align: center;
+    letter-spacing: -0.02em;
+}
+
+
+/* ============================================================
+   NAVIGATION BAR
+   Fixed top bar with links and a mobile hamburger toggle.
+   ============================================================ */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgba(248, 250, 252, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-border);
+    transition: box-shadow var(--transition);
+}
+
+/* Add shadow when page is scrolled */
+.navbar.scrolled {
+    box-shadow: var(--shadow-sm);
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+    height: 64px;
+}
+
+/* Logo text in the top-left */
+.nav-logo {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--color-dark);
+    text-decoration: none;
+    letter-spacing: -0.03em;
+}
+
+/* Blue dot accent on the logo */
+.logo-dot {
+    color: var(--color-primary);
+}
+
+/* Desktop navigation link list */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: var(--space-xl);
+}
+
+.nav-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+    position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--color-primary);
+}
+
+/* Underline indicator for active link */
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-primary);
+    border-radius: 1px;
+}
+
+/* Visible focus ring for keyboard navigation */
+.nav-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+
+/* ----- Hamburger Menu Button (hidden on desktop) ----- */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--space-sm);
+    z-index: 1001;
+}
+
+.hamburger-line {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--color-dark);
+    border-radius: 2px;
+    transition: transform var(--transition), opacity var(--transition);
+}
+
+/* Animate hamburger to an X when open */
+.hamburger.open .hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open .hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+
+/* ============================================================
+   HERO SECTION
+   Full-viewport intro with name, title, and CTA buttons.
+   ============================================================ */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 64px; /* Offset for fixed navbar */
+}
+
+.hero-content {
+    max-width: 640px;
+}
+
+/* "Hi there, my name is" label */
+.hero-greeting {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    margin-bottom: var(--space-sm);
+    letter-spacing: 0.01em;
+}
+
+/* Large name heading */
+.hero-name {
+    font-size: clamp(2.5rem, 6vw, 3.75rem);
+    font-weight: 700;
+    color: var(--color-dark);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-sm);
+}
+
+/* Role subtitle */
+.hero-title {
+    font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+    font-weight: 600;
+    color: var(--color-muted);
+    margin-bottom: var(--space-lg);
+    letter-spacing: -0.01em;
+}
+
+/* One-liner description */
+.hero-description {
+    font-size: 1.05rem;
+    color: var(--color-text);
+    max-width: 520px;
+    margin-bottom: var(--space-xl);
+    line-height: 1.75;
+}
+
+/* CTA button row */
+.hero-cta {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+
+/* ============================================================
+   BUTTONS — Reusable button styles
+   ============================================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 0.7rem 1.5rem;
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition),
+                box-shadow var(--transition), transform var(--transition);
+    border: none;
+}
+
+/* Primary filled button */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Outline / ghost button */
+.btn-outline {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 1.5px solid var(--color-primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    transform: translateY(-1px);
+}
+
+/* Full-width button (for forms) */
+.btn-full {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Focus styles for all buttons */
+.btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+}
+
+
+/* ============================================================
+   ABOUT SECTION
+   Bio text on the left, highlight stat cards on the right.
+   ============================================================ */
+.about-content {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--space-3xl);
+    align-items: start;
+}
+
+.about-text p {
+    margin-bottom: var(--space-lg);
+    line-height: 1.8;
+}
+
+.about-text .btn {
+    margin-top: var(--space-sm);
+}
+
+/* Stat / highlight cards */
+.about-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.highlight-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    text-align: center;
+    transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.highlight-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.highlight-number {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: -0.02em;
+}
+
+.highlight-label {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    font-weight: 500;
+}
+
+
+/* ============================================================
+   SKILLS SECTION
+   Three category cards in a responsive grid.
+   ============================================================ */
+.skills {
+    background-color: var(--color-surface);
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+}
+
+.skill-card {
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+    transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.skill-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+}
+
+.skill-card-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(37, 99, 235, 0.08);
+    border-radius: var(--radius-sm);
+    color: var(--color-primary);
+    margin-bottom: var(--space-lg);
+}
+
+.skill-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    margin-bottom: var(--space-md);
+}
+
+.skill-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.skill-list li {
+    font-size: 0.9rem;
+    color: var(--color-text);
+    padding-left: 1.1rem;
+    position: relative;
+}
+
+/* Small circle bullet */
+.skill-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--color-primary);
+}
+
+
+/* ============================================================
+   PROJECTS SECTION
+   Card grid with hover lift effect.
+   ============================================================ */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+}
+
+.project-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow var(--transition), transform var(--transition);
+}
+
+.project-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.project-card-header {
+    color: var(--color-primary);
+    margin-bottom: var(--space-lg);
+}
+
+.project-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    margin-bottom: var(--space-sm);
+}
+
+.project-description {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    line-height: 1.7;
+    flex-grow: 1;
+    margin-bottom: var(--space-lg);
+}
+
+/* Technology tags at the bottom of each card */
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.tag {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    background-color: rgba(37, 99, 235, 0.07);
+    padding: 0.25rem 0.65rem;
+    border-radius: 100px;
+    letter-spacing: 0.01em;
+}
+
+
+/* ============================================================
+   CONTACT SECTION
+   Centered form with social links below.
+   ============================================================ */
+.contact {
+    background-color: var(--color-surface);
+}
+
+.contact-intro {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto var(--space-2xl);
+    color: var(--color-muted);
+    font-size: 1rem;
+}
+
+.contact-form-wrapper {
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+/* Individual form field group */
+.form-group {
+    margin-bottom: var(--space-lg);
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    margin-bottom: var(--space-xs);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    font-family: var(--font-family);
+    font-size: 0.9rem;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+/* Red border on invalid fields */
+.form-group input.invalid,
+.form-group textarea.invalid {
+    border-color: #EF4444;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+/* Inline error messages */
+.error-message {
+    display: block;
+    font-size: 0.8rem;
+    color: #EF4444;
+    margin-top: var(--space-xs);
+    min-height: 1.2em;  /* Prevents layout shift */
+}
+
+/* Success message (shown after valid submission) */
+.form-success {
+    display: none;
+    text-align: center;
+    padding: var(--space-lg);
+    margin-top: var(--space-lg);
+    background-color: rgba(16, 185, 129, 0.08);
+    color: var(--color-success);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-success.visible {
+    display: block;
+}
+
+/* Social / professional links row */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    margin-top: var(--space-2xl);
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    color: var(--color-muted);
+    border: 1.5px solid var(--color-border);
+    border-radius: 50%;
+    transition: color var(--transition), border-color var(--transition),
+                background-color var(--transition);
+}
+
+.social-links a:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: rgba(37, 99, 235, 0.05);
+}
+
+.social-links a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+}
+
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+    text-align: center;
+    padding: var(--space-xl) 0;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.8rem;
+    color: var(--color-muted);
+}
+
+
+/* ============================================================
+   BACK-TO-TOP BUTTON
+   Appears when user scrolls past the hero section.
+   ============================================================ */
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity var(--transition), visibility var(--transition),
+                transform var(--transition), background-color var(--transition);
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background-color: var(--color-primary-hover);
+}
+
+.back-to-top:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+}
+
+
+/* ============================================================
+   SCROLL-TRIGGERED ANIMATIONS
+   Elements fade in when they enter the viewport.
+   ============================================================ */
+.animate-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* ============================================================
+   RESPONSIVE DESIGN — Tablet (max-width: 768px)
+   ============================================================ */
+@media (max-width: 768px) {
+
+    /* Show hamburger, hide desktop links */
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 260px;
+        height: 100vh;
+        flex-direction: column;
+        background-color: var(--color-surface);
+        padding: 5rem var(--space-xl) var(--space-xl);
+        gap: var(--space-lg);
+        box-shadow: var(--shadow-lg);
+        transition: right var(--transition);
+    }
+
+    /* Slide menu in when open */
+    .nav-links.open {
+        right: 0;
+    }
+
+    .nav-link {
+        font-size: 1rem;
+    }
+
+    /* Stack about section vertically */
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: var(--space-2xl);
+    }
+
+    .about-highlights {
+        flex-direction: row;
+    }
+
+    .highlight-card {
+        flex: 1;
+    }
+
+    /* 2-column grids on tablet */
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE DESIGN — Mobile (max-width: 480px)
+   ============================================================ */
+@media (max-width: 480px) {
+
+    .section {
+        padding: var(--space-3xl) 0;
+    }
+
+    .section-heading {
+        font-size: 1.45rem;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+    }
+
+    .hero-cta .btn {
+        text-align: center;
+    }
+
+    /* Stack highlight cards vertically */
+    .about-highlights {
+        flex-direction: column;
+    }
+
+    /* Single-column grids on mobile */
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+}
